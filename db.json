@@ -1,0 +1,47 @@
+{
+    "events": [
+      {
+        "id": 1,
+        "name": "Event 1",
+        "description": "This is the first event."
+      },
+      {
+        "id": 2,
+        "name": "Event 2",
+        "description": "This is the second event."
+      }
+    ],
+    "areas": [
+      {
+        "id": 1,
+        "name": "Area 1",
+        "description": "This is the first area."
+      }
+    ],
+    "files_media": [
+      {
+        "id": 1,
+        "name": "File 1",
+        "description": "This is the first file."
+      }
+    ],
+    "notes": [
+      {
+        "id": 1,
+        "content": "This is the first note."
+      }
+    ],
+    "favorites": [
+      {
+        "id": 1,
+        "item": "Favorite 1"
+      }
+    ],
+    "bucket_list": [
+      {
+        "id": 1,
+        "goal": "Visit a new country"
+      }
+    ]
+  }
+  
