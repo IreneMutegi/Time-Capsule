@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Time capsule</h1>
+    <form id=" timeCapsuleForm">
+        <label for="message">Message to Future You:</label>
+        <textarea id="message" name="message" rows="5" placeholder="Write a message for your future self..." required></textarea>
+        <label for="dateToOpen">Date to Open:</label>
+        <input type="date" id="dateToOpen" name="dateToOpen" required>
+        <label for="photos">Upload Photos (You can upload multiple):</label>
+        <input type="file" id="photos" name="photos" accept="image/*" multiple>
+        <div id="photoPreview"></div>
+    </form>
+</body>
+</html>
