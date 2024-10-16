@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to add entry
     function addEntry(entry) {
-        fetch('https://api.github.com/repos/irenemutegi/Time-Capsule/contents/db.json', {
+        fetch('https://raw.githubusercontent.com/irenemutegi/Time-Capsule/main/db.json', {
             method: 'PUT', // Change to PUT or POST as needed
             headers: {
                 'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to delete entry
     function deleteEntry(id) {
-        fetch(`https://api.github.com/repos/irenemutegi/Time-Capsule/contents/db.json`, {
+        fetch(`https://raw.githubusercontent.com/irenemutegi/Time-Capsule/main/db.json`, {
             method: 'DELETE', // Change to DELETE as needed
             headers: {
                 'Authorization': 'token YOUR_GITHUB_TOKEN' // You need a token if you want to write to GitHub
