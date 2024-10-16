@@ -9,83 +9,68 @@
 <body>
     <header>
         <div class="header-content">
-          <img src="source/profile.webp" alt="User Profile" class="profile-pic">
-
+            <img src="source/profile.webp" alt="User Profile" class="profile-pic">
             <h1>Digital Time Capsule</h1>
         </div>
     </header>
 
     <section class="main-content">
-        <div class="open-date">
-            <h2>Open Date</h2>
-            <p><strong>January 1, 2040 10:00 AM (GMT+1)</strong></p>
-        </div>
-
         <div class="info">
             <h3>Information</h3>
             <p><a href="#">What to include in the Digital Time Capsule?</a></p>
-            <p>“In your digital time capsule, include personal messages to your future self, cherished photos, videos, and meaningful memories. Capture your goals, dreams, favorite music, and everyday moments. Document your thoughts on current events and trends, along with mementos of important relationships. This capsule will be a snapshot of who you are today, preserved for future reflection and discovery.”.</p>
+            <p>“In your digital time capsule, include personal messages to your future self, cherished photos, videos, and meaningful memories. Capture your goals, dreams, favorite music, and everyday moments. Document your thoughts on current events and trends, along with mementos of important relationships. This capsule will be a snapshot of who you are today, preserved for future reflection and discovery.”</p>
         </div>
 
-        <div class="navigation">
-            <h3>Navigation</h3>
-            <div class="nav-items">
-                <div class="nav-item">
-                    <img src="source/events.jpg" alt="Events">
-                    <p>Events</p>
-                </div>
-                <div class="nav-item">
-                    <img src="source/places.jpeg" alt="Areas">
-                    <p>Areas</p>
-                </div>
-                <div class="nav-item">
-                    <img src="source/files.jpeg" alt="Files & Media">
-                    <p>Files & Media</p>
-                </div>
-                <div class="nav-item">
-                    <img src="source/notes.jpeg" alt="Notes">
-                    <p>Notes</p>
-                </div>
-                <div class="nav-item">
-                    <img src="source/favourite.jpeg" alt="Favorites">
-                    <p>Favorites</p>
-                </div>
-                <div class="nav-item">
-                    <img src="source/bucketlist.png" alt="Bucket List">
-                    <p>Bucket List</p>
+        <form id="entryForm" action="/submitAll" method="post">
+            <div class="navigation">
+                <h3>Navigation</h3>
+                <div class="nav-items">
+                    <div class="nav-item">
+                        <img src="source/events.jpg" alt="Events">
+                        <label for="events">Describe events:</label>
+                        <textarea id="events" name="events" rows="4" cols="50" placeholder="Describe special events..."></textarea>
+                    </div>
+                    <div class="nav-item">
+                        <img src="source/places.jpeg" alt="Areas">
+                        <label for="areas">Describe areas:</label>
+                        <textarea id="areas" name="areas" rows="4" cols="50" placeholder="Describe important places..."></textarea>
+                    </div>
+                    <div class="nav-item">
+                        <img src="source/files.jpeg" alt="Files & Media">
+                        <label for="files">Upload Files & Media:</label>
+                        <input type="file" id="files" name="files" multiple accept="image/*,video/*">
+                    </div>
+                    <div class="nav-item">
+                        <img src="source/notes.jpeg" alt="Notes">
+                        <label for="notes">Write your notes:</label>
+                        <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Write your notes..."></textarea>
+                    </div>
+                    <div class="nav-item">
+                        <img src="source/favourite.jpeg" alt="Favorites">
+                        <label for="favorites">List your favorites:</label>
+                        <textarea id="favorites" name="favorites" rows="4" cols="50" placeholder="List your favorite things..."></textarea>
+                    </div>
+                    <div class="nav-item">
+                        <img src="source/bucketlist.png" alt="Bucket List">
+                        <label for="bucket-list">Bucket List:</label>
+                        <textarea id="bucket-list" name="bucket-list" rows="4" cols="50" placeholder="Write your bucket list items..."></textarea>
+                    </div>
+                    <div class="nav-item">
+                        <img src="source/hourglass.jpg" alt="Open date">
+                        <label for="open-date">Select Open Date & Time:</label>
+                        <input type="datetime-local" id="open-date" name="open-date" required>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-section">
-          <h2>Add Your Memories</h2>
-          <form action="/submit" method="post" enctype="multipart/form-data">
-              
-              <label for="events">Events:</label>
-              <textarea id="events" name="events" rows="4" cols="50" placeholder="Describe special events..."></textarea>
-  
-              
-              <label for="areas">Areas:</label>
-              <textarea id="areas" name="areas" rows="4" cols="50" placeholder="Describe important places..."></textarea>
+            <input type="submit" value="Submit All" class="submit-btn">
+        </form>
 
-              <label for="files">Upload Files & Media:</label>
-              <input type="file" id="files" name="files" multiple accept="image/*,video/*">
-  
-              
-              <label for="notes">Notes:</label>
-              <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Write your notes..."></textarea>
-  
-              
-              <label for="favorites">Favorites:</label>
-              <textarea id="favorites" name="favorites" rows="4" cols="50" placeholder="List your favorite things..."></textarea>
-  
-              
-              <label for="bucket-list">Bucket List:</label>
-              <textarea id="bucket-list" name="bucket-list" rows="4" cols="50" placeholder="Write your bucket list items..."></textarea>
-  
-              
-              <input type="submit" value="Submit Memories">
-          </form>
-        </div>
+        <section id="timeCapsule">
+            <h2>Your Time Capsule</h2>
+            <div id="capsuleContent"></div>
+        </section>
     </section>
+
+    <script src="index.js"></script>
 </body>
 </html>
