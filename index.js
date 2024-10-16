@@ -1,43 +1,40 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     
     document.getElementById('entryForm').addEventListener('submit', function(event) {
         event.preventDefault(); 
 
-      
         const formData = new FormData(this);
         const entry = {};
 
-      
         formData.forEach((value, key) => {
             entry[key] = value;
         });
 
-       
         addEntry(entry);
     });
 
     // Function to add entry
     function addEntry(entry) {
-        fetch('http://localhost:3000/entries', {
-            method: 'POST',
+        fetch('https://api.github.com/repos/irenemutegi/Time-Capsule/contents/db.json', {
+            method: 'PUT', // Change to PUT or POST as needed
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'token YOUR_GITHUB_TOKEN' // You need a token if you want to write to GitHub
             },
             body: JSON.stringify(entry),
         })
         .then(response => response.json())
         .then(data => {
             console.log('New entry added:', data);
-            displayEntries(); // Refresh the displayed entries
-            document.getElementById('entryForm').reset(); // Clear the form after submission
+            displayEntries(); 
+            document.getElementById('entryForm').reset(); 
         })
         .catch(error => console.error('Error adding entry:', error));
     }
 
     // Function to display entries
     function displayEntries() {
-        fetch('http://localhost:3000/entries')
+        fetch('https://raw.githubusercontent.com/irenemutegi/Time-Capsule/main/db.json')
             .then(response => response.json())
             .then(data => {
                 const entriesList = document.getElementById('capsuleContent');
@@ -45,8 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 const ul = document.createElement('ul');
 
-          
-                data.forEach(entry => {
+                data.entries.forEach(entry => {
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <strong>Events:</strong> ${entry.events} <br>
@@ -63,27 +59,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 entriesList.appendChild(ul); 
 
-               
                 attachButtonEvents();
             })
             .catch(error => console.error('Error fetching entries:', error));
     }
 
-   
     function attachButtonEvents() {
         const editButtons = document.querySelectorAll('.edit-btn');
         const deleteButtons = document.querySelectorAll('.delete-btn');
 
-        
         editButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 console.log('Editing Entry ID:', id);
-             
             });
         });
 
-      
         deleteButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
@@ -95,8 +86,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to delete entry
     function deleteEntry(id) {
-        fetch(`http://localhost:3000/entries/${id}`, {
-            method: 'DELETE'
+        fetch(`https://api.github.com/repos/irenemutegi/Time-Capsule/contents/db.json`, {
+            method: 'DELETE', // Change to DELETE as needed
+            headers: {
+                'Authorization': 'token YOUR_GITHUB_TOKEN' // You need a token if you want to write to GitHub
+            }
         })
         .then(response => response.json())
         .then(data => {
