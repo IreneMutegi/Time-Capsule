@@ -159,3 +159,48 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: #4e955e;
 }
+
+/* General Button Styles */
+button, input[type="submit"] {
+  background-color: #58a56a; 
+  color: white; 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 1em; 
+  transition: background-color 0.3s, transform 0.2s; 
+}
+
+/* Button Hover Effect */
+button:hover, input[type="submit"]:hover {
+  background-color: #4e955e; 
+  transform: scale(1.05); 
+}
+
+/* Disabled Button Styles */
+button:disabled, input[type="submit"]:disabled {
+  background-color: #ccc; 
+  cursor: not-allowed; 
+}
+
+/* Specific styles for submit button */
+.submit-btn {
+  margin-top: 20px; 
+}
+
+/* Custom styles for file input button */
+input[type="file"] {
+  background-color: #58a56a; 
+  color: white; 
+  padding: 10px 15px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 1em; 
+}
+
+/* File Input Hover Effect */
+input[type="file"]:hover {
+  background-color: #4e955e; 
+}

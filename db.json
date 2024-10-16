@@ -1,33 +1,3 @@
 {
-  "entries": [
-    {
-      "id": "2",
-      "events": "First job",
-      "areas": "City Center",
-      "notes": "My first step into my career!",
-      "favorites": "Burgers",
-      "bucketList": "Travel to Japan",
-      "openDate": "2040-01-01T10:00:00Z"
-    },
-    {
-      "id": "9b89",
-      "events": "Zanna's Birthday",
-      "areas": "Coptic hospital",
-      "files": {},
-      "notes": "Can't wait to leave the hospital",
-      "favorites": "Baby Zanna",
-      "bucketList": "To visit her often",
-      "openDate": "2024-10-17T14:16"
-    },
-    {
-      "id": "1c20",
-      "events": "Emma's Wedding",
-      "areas": "Limuru - a garden wedding",
-      "files": {},
-      "notes": "Congratulations Emma",
-      "favorites": "Her wedding gown",
-      "bucketList": "Be a good bridesmaid",
-      "openDate": "2024-10-24T14:18"
-    }
-  ]
+  "entries": []
 }
