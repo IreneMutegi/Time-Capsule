@@ -23,6 +23,70 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Search input handler
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        searchEntries(query);
+    });
+
+    // Function to search entries
+    function searchEntries(query) {
+        fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+            method: 'GET',
+            headers: {
+                'X-Master-Key': apiKey
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const filteredEntries = data.record.entries.filter(entry =>
+                entry.events.toLowerCase().includes(query) ||
+                entry.areas.toLowerCase().includes(query) ||
+                entry.notes.toLowerCase().includes(query) ||
+                entry.favorites.toLowerCase().includes(query) ||
+                entry['bucket-list'].toLowerCase().includes(query)
+            );
+            displayFilteredEntries(filteredEntries);
+        })
+        .catch(error => console.error('Error fetching entries for search:', error));
+    }
+
+    // Function to display filtered entries
+    function displayFilteredEntries(entries) {
+        const entriesList = document.getElementById('capsuleContent');
+        entriesList.innerHTML = ''; 
+        
+        const ul = document.createElement('ul');
+
+        entries.forEach(entry => {
+            const li = document.createElement('li');
+            const openDate = new Date(entry['open-date']);
+            const currentDate = new Date();
+
+            // Check if the entry is locked based on the open date
+            const isLocked = currentDate < openDate;
+
+            li.innerHTML = `
+                <strong>Event:</strong> ${entry.events} <br>
+                <strong>Open Date:</strong> ${entry['open-date']} <br>
+                ${entry['image-url'] ? `<div style="max-width: 200px;"><img src="${entry['image-url']}" alt="Entry Image" style="max-width: 100%;"/></div>` : ''}
+                ${isLocked ? `<p>This entry is locked until ${entry['open-date']}.</p>` : `
+                    <strong>Areas:</strong> ${entry.areas} <br>
+                    <strong>Notes:</strong> ${entry.notes} <br>
+                    <strong>Favorites:</strong> ${entry.favorites} <br>
+                    <strong>Bucket List:</strong> ${entry['bucket-list']} <br>
+                `}
+                <button class="edit-btn" data-id="${entry.id}">Edit</button>
+                <button class="delete-btn" data-id="${entry.id}">Delete</button>
+            `;
+
+            ul.appendChild(li);
+        });
+
+        entriesList.appendChild(ul);
+        attachEditAndDeleteHandlers();
+    }
+
     // Function to add entry
     function addEntry(newEntry) {
         fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
@@ -116,17 +180,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 li.innerHTML = `
                     <strong>Event:</strong> ${entry.events} <br>
-                 <strong>Open Date:</strong> ${entry['open-date']} <br>
-                  ${entry['image-url'] ? `<div style="max-width: 200px;"><img src="${entry['image-url']}" alt="Entry Image" style="max-width: 100%;"/></div>` : ''}
-                      ${isLocked ? `<p>This entry is locked until ${entry['open-date']}.</p>` : `
-                    <strong>Areas:</strong> ${entry.areas} <br>
-                       <strong>Notes:</strong> ${entry.notes} <br>
-                  <strong>Favorites:</strong> ${entry.favorites} <br>
-                       <strong>Bucket List:</strong> ${entry['bucket-list']} <br>
-                   `}
-                   <button class="edit-btn" data-id="${entry.id}">Edit</button>
-                  <button class="delete-btn" data-id="${entry.id}">Delete</button>
-`;
+                    <strong>Open Date:</strong> ${entry['open-date']} <br>
+                    ${entry['image-url'] ? `<div style="max-width: 200px;"><img src="${entry['image-url']}" alt="Entry Image" style="max-width: 100%;"/></div>` : ''}
+                    ${isLocked ? `<p>This entry is locked until ${entry['open-date']}.</p>` : `
+                        <strong>Areas:</strong> ${entry.areas} <br>
+                        <strong>Notes:</strong> ${entry.notes} <br>
+                        <strong>Favorites:</strong> ${entry.favorites} <br>
+                        <strong>Bucket List:</strong> ${entry['bucket-list']} <br>
+                    `}
+                    <button class="edit-btn" data-id="${entry.id}">Edit</button>
+                    <button class="delete-btn" data-id="${entry.id}">Delete</button>
+                `;
 
                 ul.appendChild(li);
             });
