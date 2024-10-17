@@ -1,23 +1,32 @@
-/* Basic Reset */
-* {
+/* General Styling */ 
+body {
+  font-family: 'Verdana', sans-serif;
+  background: linear-gradient(to bottom right, #00509d, #f8f9fa);
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  color: #333;
+  line-height: 1.6;
+  position: relative; 
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #e0f7e9; 
-  color: #333;
-  padding: 20px;
+body::before {
+  content: "";
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('path/to/your/pattern.png') repeat; 
+  opacity: 0.05; 
+  z-index: -1; 
 }
 
 header {
-  background-color: #58a56a;
+  background-color: #00509d;
+  color: #fff;
   padding: 20px;
-  border-radius: 10px;
-  color: white;
   text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header-content {
@@ -26,181 +35,223 @@ header {
   justify-content: center;
 }
 
-.profile-pic {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-right: 20px;
+.header-content h1 {
+  margin-left: 20px;
+  font-size: 2.5rem;
+  font-weight: bold;
 }
 
-h1 {
-  font-size: 2.5em;
+.profile-pic {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .main-content {
-  margin-top: 20px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.open-date, .info, .navigation {
-  margin-bottom: 20px;
-}
-
-.open-date h2, .info h3, .navigation h3 {
-  color: #58a56a; /* Matching green for section titles */
-}
-
-a {
-  color: #58a56a;
-  text-decoration: none;
-}
-
-/* Navigation Styles */
-.nav-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px; /* Reduced spacing between navigation items */
-}
-
-.nav-item {
-  text-align: center;
-  background-color: #f0f4f2;
-  padding: 40px;
-  border-radius: 8px;
-  width: 320px; /* Consistent width for all navigation items */
-  transition: transform 0.2s;
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between; /* Ensures even space between elements */
+  gap: 40px;
 }
 
-.nav-item:hover {
-  transform: scale(1.05);
+.info {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.nav-item img {
-  width: 280px; /* Increased image size */
-  height: 280px; /* Increased image size */
+.info h3 {
+  font-size: 1.8rem;
+  color: #00509d;
   margin-bottom: 10px;
 }
 
-p {
-  font-size: 1.2em; /* Increased font size */
-  color: #333;
-  margin-top: 10px; /* Ensures spacing above the paragraph */
+.info p {
+  font-size: 1.2rem;
+  line-height: 1.8;
 }
 
-/* Centering the Files & Media */
-.nav-item[data-type="files-media"] {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centers the content horizontally */
-  justify-content: center; /* Centers the content vertically */
+.info a {
+  color: #00509d;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
 }
 
-/* Form Section */
-.form-section {
-  margin-top: 20px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.form-section h2 {
-  color: #58a56a; /* Matching green for section titles */
-  margin-bottom: 20px;
+.info a:hover {
+  text-decoration: underline;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
-label {
+form label {
+  font-size: 1rem;
   font-weight: bold;
-  margin-bottom: 5px;
   color: #333;
+  margin-bottom: 5px;
+  display: block;
 }
 
-textarea {
-  width: 90%; /* Ensures textareas take up consistent space */
-  padding: 15px;
+form textarea,
+form input[type="file"],
+form input[type="datetime-local"],
+form input[type="url"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 10px;
+  font-size: 1rem;
 }
 
-input[type="file"] {
-  width: 90%; /* Ensures file input takes up consistent space */
+form .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease; 
+}
+
+form .nav-item img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease; 
+}
+
+form .nav-item:hover img {
+  transform: scale(1.1); 
+}
+
+form .nav-item a {
+  color: #00509d;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+  transition: color 0.3s ease; 
+}
+
+form .nav-item a:hover {
+  color: #003d7a; 
+}
+
+#image-url {
+  width: calc(100% - 22px); 
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 20px;
-  font-size: 1em;
+  font-size: 1rem;
 }
 
-input[type="submit"] {
-  width: 90%; /* Ensures submit buttons are consistent in width */
-  background-color: #58a56a;
-  color: white;
-  padding: 10px 20px;
+#imageUrlHelp {
+  font-size: 12px;
+  color: #666;
+}
+
+.submit-btn {
+  grid-column: span 2;
+  background-color: #00509d;
+  color: #fff;
+  padding: 12px;
+  font-size: 1.2rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1.2em;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #003d7a;
+}
+
+#timeCapsule {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#timeCapsule h2 {
+  font-size: 1.8rem;
+  color: #00509d;
   margin-bottom: 10px;
 }
 
-input[type="submit"]:hover {
-  background-color: #4e955e;
+#searchSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-/* General Button Styles */
-button, input[type="submit"] {
-  background-color: #58a56a; 
-  color: white; 
-  padding: 10px 20px; 
-  border: none; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  font-size: 1em; 
-  transition: background-color 0.3s, transform 0.2s; 
+#searchInput {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
-/* Button Hover Effect */
-button:hover, input[type="submit"]:hover {
-  background-color: #4e955e; 
-  transform: scale(1.05); 
+#searchBtn {
+  background-color: #00509d;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Disabled Button Styles */
-button:disabled, input[type="submit"]:disabled {
-  background-color: #ccc; 
-  cursor: not-allowed; 
+#searchBtn:hover {
+  background-color: #003d7a;
 }
 
-/* Specific styles for submit button */
-.submit-btn {
-  margin-top: 20px; 
+#capsuleContent {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
 }
 
-/* Custom styles for file input button */
-input[type="file"] {
-  background-color: #58a56a; 
-  color: white; 
-  padding: 10px 15px; 
-  border: none; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  font-size: 1em; 
+#capsuleContent img {
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 5px; 
 }
 
-/* File Input Hover Effect */
-input[type="file"]:hover {
-  background-color: #4e955e; 
+ul {
+    display: flex;
+    flex-direction: column; /* Arrange items in a column */
+    flex: 1; /* Allow ul to take the available width */
+}
+
+ul li {
+    background-color: #f1f5f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    flex: 1; 
+    transition: box-shadow 0.3s ease;
+    width: calc(50% - 10px); 
+}
+
+li img {
+    width: 100%; 
+    border-radius: 5px; 
 }

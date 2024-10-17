@@ -14,15 +14,15 @@
         </div>
     </header>
 
-    <section class="main-content">
-        <div class="info">
+    <main class="main-content">
+        <section class="info">
             <h3>Information</h3>
             <p><a href="#">What to include in the Digital Time Capsule?</a></p>
             <p>“In your digital time capsule, include personal messages to your future self, cherished photos, videos, and meaningful memories. Capture your goals, dreams, favorite music, and everyday moments. Document your thoughts on current events and trends, along with mementos of important relationships. This capsule will be a snapshot of who you are today, preserved for future reflection and discovery.”</p>
-        </div>
+        </section>
 
         <form id="entryForm" action="/submitAll" method="post">
-            <div class="navigation">
+            <nav class="navigation">
                 <h3>Navigation</h3>
                 <div class="nav-items">
                     <div class="nav-item">
@@ -34,11 +34,6 @@
                         <img src="source/places.jpeg" alt="Areas">
                         <label for="areas">Describe areas:</label>
                         <textarea id="areas" name="areas" rows="4" cols="50" placeholder="Describe important places..."></textarea>
-                    </div>
-                    <div class="nav-item">
-                        <img src="source/files.jpeg" alt="Files & Media">
-                        <label for="files">Upload Files & Media:</label>
-                        <input type="file" id="files" name="files" multiple accept="image/*,video/*">
                     </div>
                     <div class="nav-item">
                         <img src="source/notes.jpeg" alt="Notes">
@@ -60,26 +55,31 @@
                         <label for="open-date">Select Open Date & Time:</label>
                         <input type="datetime-local" id="open-date" name="open-date" required>
                     </div>
+                    <div class="nav-item">
+                        <img src="source/files.jpeg" alt="Image URL">
+                        <label for="image-url">Image URL:</label>
+                        <input type="url" id="image-url" name="image-url" placeholder="Enter image URL" required>
+                        <small id="imageUrlHelp">Paste the URL of an image related to your entry.</small>
+                    </div>
                 </div>
-                
-            </div>
-            <input type="submit" value="Submit All" class="submit-btn">
+            </nav>
+            <button type="submit" class="submit-btn">Submit All</button>
         </form>
 
         <section id="timeCapsule">
             <h2>Your Time Capsule</h2>
 
-            
+            <!-- Search Section -->
             <section id="searchSection">
                 <h3>Search Entries</h3>
                 <input type="text" id="searchInput" placeholder="Search by event">
                 <button id="searchBtn">Search</button>
             </section>
-            
+            <!-- End of Search Section -->
 
             <div id="capsuleContent"></div>
         </section>
-    </section>
+    </main>
 
     <script src="index.js"></script>
 </body>

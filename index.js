@@ -1,11 +1,10 @@
-const binId = '67102253ad19ca34f8b9ba09';  
+const binId = '67102253ad19ca34f8b9ba09';   
 const apiKey = '$2a$10$rMrW9YM8x3fpzVQdEUnjaOEvr5J81aS7fwZwxUcZyby5xgPAddQ.W';  
 
 let isEditing = false;
 let editingId = null;
 
 document.addEventListener('DOMContentLoaded', function () {
-
     // Form submission handler
     document.getElementById('entryForm').addEventListener('submit', function(event) {
         event.preventDefault(); 
@@ -117,182 +116,86 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 li.innerHTML = `
                     <strong>Event:</strong> ${entry.events} <br>
-                    <strong>Open Date:</strong> ${entry['open-date']} <br>
-                    ${isLocked ? `<p>This entry is locked until ${entry['open-date']}.</p>` : `
+                 <strong>Open Date:</strong> ${entry['open-date']} <br>
+                  ${entry['image-url'] ? `<div style="max-width: 200px;"><img src="${entry['image-url']}" alt="Entry Image" style="max-width: 100%;"/></div>` : ''}
+                      ${isLocked ? `<p>This entry is locked until ${entry['open-date']}.</p>` : `
                     <strong>Areas:</strong> ${entry.areas} <br>
-                    <strong>Notes:</strong> ${entry.notes} <br>
-                    <strong>Favorites:</strong> ${entry.favorites} <br>
-                    <strong>Bucket List:</strong> ${entry['bucket-list']} <br>
-                    `}
-                    <button class="edit-btn" data-id="${entry.id}">Edit</button>
-                    <button class="delete-btn" data-id="${entry.id}">Delete</button>
-                    <button class="lock-btn" data-id="${entry.id}" ${entry.locked ? 'disabled' : ''}>${entry.locked ? 'Locked' : 'Lock Entry'}</button>
-                    <hr>`;
+                       <strong>Notes:</strong> ${entry.notes} <br>
+                  <strong>Favorites:</strong> ${entry.favorites} <br>
+                       <strong>Bucket List:</strong> ${entry['bucket-list']} <br>
+                   `}
+                   <button class="edit-btn" data-id="${entry.id}">Edit</button>
+                  <button class="delete-btn" data-id="${entry.id}">Delete</button>
+`;
+
                 ul.appendChild(li);
             });
 
-            entriesList.appendChild(ul); 
-            attachButtonEvents();
+            entriesList.appendChild(ul);
+            attachEditAndDeleteHandlers();
         })
         .catch(error => console.error('Error fetching entries:', error));
     }
 
-    function attachButtonEvents() {
-        const editButtons = document.querySelectorAll('.edit-btn');
-        const deleteButtons = document.querySelectorAll('.delete-btn');
-        const lockButtons = document.querySelectorAll('.lock-btn');
-
-        editButtons.forEach(button => {
+    // Function to attach event handlers for edit and delete buttons
+    function attachEditAndDeleteHandlers() {
+        document.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                loadEntryToEdit(id);
+                const id = this.dataset.id;
+                fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Master-Key': apiKey
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const entryToEdit = data.record.entries.find(entry => entry.id === id);
+                    if (entryToEdit) {
+                        document.getElementById('events').value = entryToEdit.events || '';
+                        document.getElementById('areas').value = entryToEdit.areas || '';
+                        document.getElementById('notes').value = entryToEdit.notes || '';
+                        document.getElementById('favorites').value = entryToEdit.favorites || '';
+                        document.getElementById('bucket-list').value = entryToEdit['bucket-list'] || '';
+                        document.getElementById('open-date').value = entryToEdit['open-date'] || '';
+                        document.getElementById('image-url').value = entryToEdit['image-url'] || '';
+                        isEditing = true;
+                        editingId = id;
+                    }
+                });
             });
         });
 
-        deleteButtons.forEach(button => {
+        document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                deleteEntry(id);
+                const id = this.dataset.id;
+                fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Master-Key': apiKey
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const updatedEntries = data.record.entries.filter(entry => entry.id !== id);
+                    return fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': apiKey
+                        },
+                        body: JSON.stringify({ entries: updatedEntries })
+                    });
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Entry deleted:', data);
+                    displayEntries();
+                })
+                .catch(error => console.error('Error deleting entry:', error));
             });
         });
-
-        lockButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                lockEntry(id);
-            });
-        });
     }
 
-    // Function to load entry into the form for editing
-    function loadEntryToEdit(id) {
-        fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-            method: 'GET',
-            headers: {
-                'X-Master-Key': apiKey
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const entry = data.record.entries.find(entry => entry.id === id);
-            if (entry) {
-                document.getElementById('events').value = entry.events;
-                document.getElementById('areas').value = entry.areas;
-                document.getElementById('notes').value = entry.notes;
-                document.getElementById('favorites').value = entry.favorites;
-                document.getElementById('bucket-list').value = entry['bucket-list'];
-                document.getElementById('open-date').value = entry['open-date'];
-                isEditing = true;
-                editingId = id;
-            }
-        })
-        .catch(error => console.error('Error loading entry for edit:', error));
-    }
-
-    // Function to delete entry
-    function deleteEntry(id) {
-        fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-            method: 'GET',
-            headers: {
-                'X-Master-Key': apiKey
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const existingEntries = data.record.entries.filter(entry => entry.id !== id);
-
-            return fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': apiKey
-                },
-                body: JSON.stringify({ entries: existingEntries })
-            });
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Entry deleted:', data);
-            displayEntries();
-        })
-        .catch(error => console.error('Error deleting entry:', error));
-    }
-
-    // Function to lock an entry
-    function lockEntry(id) {
-        fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-            method: 'GET',
-            headers: {
-                'X-Master-Key': apiKey
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const existingEntries = data.record.entries.map(entry => {
-                if (entry.id === id) {
-                    // Set a property to indicate the entry is locked
-                    entry.locked = true;
-                }
-                return entry;
-            });
-
-            return fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': apiKey
-                },
-                body: JSON.stringify({ entries: existingEntries })
-            });
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Entry locked:', data);
-            displayEntries();
-        })
-        .catch(error => console.error('Error locking entry:', error));
-    }
-
-    // Search functionality
-    document.getElementById('searchBtn').addEventListener('click', function() {
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-
-        fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-            method: 'GET',
-            headers: {
-                'X-Master-Key': apiKey
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const entriesList = document.getElementById('capsuleContent');
-            entriesList.innerHTML = ''; 
-            
-            const ul = document.createElement('ul');
-
-            data.record.entries.forEach(entry => {
-                if (entry.events.toLowerCase().includes(searchTerm)) {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <strong>Event:</strong> ${entry.events} <br>
-                        <strong>Open Date:</strong> ${entry['open-date']} <br>
-                        <strong>Areas:</strong> ${entry.areas} <br>
-                        <strong>Notes:</strong> ${entry.notes} <br>
-                        <strong>Favorites:</strong> ${entry.favorites} <br>
-                        <strong>Bucket List:</strong> ${entry['bucket-list']} <br>
-                        <button class="edit-btn" data-id="${entry.id}">Edit</button>
-                        <button class="delete-btn" data-id="${entry.id}">Delete</button>
-                        <button class="lock-btn" data-id="${entry.id}" ${entry.locked ? 'disabled' : ''}>${entry.locked ? 'Locked' : 'Lock Entry'}</button>
-                        <hr>`;
-                    ul.appendChild(li);
-                }
-            });
-
-            entriesList.appendChild(ul); 
-            attachButtonEvents();
-        })
-        .catch(error => console.error('Error searching entries:', error));
-    });
-
-    displayEntries(); // Initial load
+    displayEntries(); 
 });
