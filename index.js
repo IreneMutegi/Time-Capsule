@@ -1,11 +1,12 @@
-const binId = '67102253ad19ca34f8b9ba09';  // Your JSONBin ID
-const apiKey = '$2a$10$rMrW9YM8x3fpzVQdEUnjaOEvr5J81aS7fwZwxUcZyby5xgPAddQ.W';  // Your JSONBin API key
+const binId = '67102253ad19ca34f8b9ba09';  
+const apiKey = '$2a$10$rMrW9YM8x3fpzVQdEUnjaOEvr5J81aS7fwZwxUcZyby5xgPAddQ.W';  
 
 let isEditing = false;
 let editingId = null;
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    // Form submission handler
     document.getElementById('entryForm').addEventListener('submit', function(event) {
         event.preventDefault(); 
 
@@ -251,38 +252,47 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error locking entry:', error));
     }
-    const cloudName = 'YOURdd4w34sj4';  // Replace with your Cloudinary Cloud Name
-    const uploadPreset = 'picture';  // Replace with your Upload Preset
-    
-    // // Function to upload file
-    // const uploadFile = (file) => {
-    //     const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-    //     const formData = new FormData();
-    //     formData.append('file', file);
-    //     formData.append('upload_preset', uploadPreset);
-    
-    //     fetch(url, {
-    //         method: 'POST',
-    //         body: formData,
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log('File uploaded successfully:', data);
-    //         // You can save the data.secure_url to your JSON bin or use it in your app
-    //         // For example, to display the uploaded image:
-    //         const img = document.createElement('img');
-    //         img.src = data.secure_url;
-    //         document.getElementById('capsuleContent').appendChild(img);
-    //     })
-    //     .catch(error => console.error('Error uploading file:', error));
-    // };
-    
-    // // Add event listener to the file input
-    // document.getElementById('files').addEventListener('change', function(event) {
-    //     const files = event.target.files;
-    //     Array.from(files).forEach(file => uploadFile(file));
-    // });
-    
-    // Initial call to display entries on page load
-    displayEntries();
+
+    // Search functionality
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+        fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+            method: 'GET',
+            headers: {
+                'X-Master-Key': apiKey
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const entriesList = document.getElementById('capsuleContent');
+            entriesList.innerHTML = ''; 
+            
+            const ul = document.createElement('ul');
+
+            data.record.entries.forEach(entry => {
+                if (entry.events.toLowerCase().includes(searchTerm)) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <strong>Event:</strong> ${entry.events} <br>
+                        <strong>Open Date:</strong> ${entry['open-date']} <br>
+                        <strong>Areas:</strong> ${entry.areas} <br>
+                        <strong>Notes:</strong> ${entry.notes} <br>
+                        <strong>Favorites:</strong> ${entry.favorites} <br>
+                        <strong>Bucket List:</strong> ${entry['bucket-list']} <br>
+                        <button class="edit-btn" data-id="${entry.id}">Edit</button>
+                        <button class="delete-btn" data-id="${entry.id}">Delete</button>
+                        <button class="lock-btn" data-id="${entry.id}" ${entry.locked ? 'disabled' : ''}>${entry.locked ? 'Locked' : 'Lock Entry'}</button>
+                        <hr>`;
+                    ul.appendChild(li);
+                }
+            });
+
+            entriesList.appendChild(ul); 
+            attachButtonEvents();
+        })
+        .catch(error => console.error('Error searching entries:', error));
+    });
+
+    displayEntries(); // Initial load
 });
